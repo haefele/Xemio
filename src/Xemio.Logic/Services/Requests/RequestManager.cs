@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Xemio.Logic.Entities;
 using Xemio.Logic.Requests;
 
 namespace Xemio.Logic.Services.Requests

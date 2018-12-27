@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
+using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,7 @@ namespace Xemio.Logic
             });
             self.AddConfiguration(configuration);
             self.AddDatabase();
+            self.AddValidators();
             self.AddMediatR();
             self.AddServices();
         }
@@ -43,6 +46,7 @@ namespace Xemio.Logic
                 var databaseConfiguration = f.GetRequiredService<IOptions<DatabaseConfiguration>>().Value;
 
                 var store = new DocumentStore();
+                store.Database = databaseConfiguration.DatabaseName;
                 store.Urls = databaseConfiguration.Urls.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);
                 
                 store.Initialize();
@@ -51,6 +55,17 @@ namespace Xemio.Logic
             });
 
             self.AddScoped<IAsyncDocumentSession>(f => f.GetRequiredService<IDocumentStore>().OpenAsyncSession());
+        }
+
+        private static void AddValidators(this IServiceCollection self)
+        {
+            self.Scan(scan =>
+            {
+                scan.FromAssemblies(typeof(XemioFramework).Assembly)
+                    .AddClasses(classes => classes.AssignableTo(typeof(IValidator<>)))
+                    .As(type => type.GetInterfaces().Where(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == typeof(IValidator<>)))
+                    .WithTransientLifetime();
+            });
         }
 
         private static void AddMediatR(this IServiceCollection self)

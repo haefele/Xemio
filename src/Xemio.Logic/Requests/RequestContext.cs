@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents.Session;
+using Xemio.Logic.Entities;
 
 namespace Xemio.Logic.Requests
 {

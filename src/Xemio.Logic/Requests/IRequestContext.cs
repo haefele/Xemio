@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Xemio.Logic.Entities;
 
 namespace Xemio.Logic.Requests
 {
@@ -13,9 +14,5 @@ namespace Xemio.Logic.Requests
         Task Publish<TNotification>(TNotification notification, CancellationToken token = default(CancellationToken)) where TNotification : INotification;
 
         Task CommitAsync(CancellationToken token = default(CancellationToken));
-    }
-
-    public class User
-    {
     }
 }
