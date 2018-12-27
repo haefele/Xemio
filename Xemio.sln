@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7AB43C16-02C5-4E80-802D-F6D79CB69F0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{F494EE2C-1AB9-4E4D-80AC-6D5664410DEB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Client", "src\Xemio.Client\Xemio.Client.csproj", "{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Logic", "src\Xemio.Logic\Xemio.Logic.csproj", "{A3EC7913-351E-488B-954B-CE180B10FF08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3EC7913-351E-488B-954B-CE180B10FF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3EC7913-351E-488B-954B-CE180B10FF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3EC7913-351E-488B-954B-CE180B10FF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3EC7913-351E-488B-954B-CE180B10FF08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F} = {7AB43C16-02C5-4E80-802D-F6D79CB69F0D}
+		{A3EC7913-351E-488B-954B-CE180B10FF08} = {7AB43C16-02C5-4E80-802D-F6D79CB69F0D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B92C210-A01C-4B57-AD28-8D935123DB08}
+	EndGlobalSection
+EndGlobal
