@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Xemio.Client.Data.Actions;
 using Xemio.Logic.Requests;
-using Xemio.Logic.Services.RegisterUser;
+using Xemio.Logic.Requests.Auth.RegisterUser;
 
 namespace Xemio.Server.Controllers
 {
@@ -18,15 +20,19 @@ namespace Xemio.Server.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<object>> Register()
+        public async Task<ActionResult<object>> Register([FromBody]RegisterUserAction action, CancellationToken token = default)
         {
-            var user = await this._requestContext.Send(new RegisterUserRequest
+            var registerUserRequest = new RegisterUserRequest
             {
-                EmailAddress = "haefele@xemio.net",
-                Password = "12345678"
-            }).ConfigureAwait(false);
+                EmailAddress = action.EmailAddress,
+                Password = action.Password
+            };
 
-            return user;
+            var user = await this._requestContext.Send(registerUserRequest, token).ConfigureAwait(false);
+
+            await this._requestContext.CommitAsync(token);
+
+            return this.Ok(user);
         }
     }
 }

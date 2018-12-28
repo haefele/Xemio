@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Xemio.Client\Xemio.Client.csproj" />
     <ProjectReference Include="..\Xemio.Logic\Xemio.Logic.csproj" />
   </ItemGroup>
 

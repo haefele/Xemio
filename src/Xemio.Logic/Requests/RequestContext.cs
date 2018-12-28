@@ -13,6 +13,9 @@ namespace Xemio.Logic.Requests
 
         public RequestContext(IAsyncDocumentSession session, IMediator mediator)
         {
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(mediator, nameof(mediator));
+
             this._session = session;
             this._mediator = mediator;
         }
@@ -21,11 +24,15 @@ namespace Xemio.Logic.Requests
 
         public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default(CancellationToken))
         {
+            Guard.NotNull(request, nameof(request));
+
             return await this._mediator.Send(request, token).ConfigureAwait(false);
         }
 
         public async Task Publish<TNotification>(TNotification notification, CancellationToken token = default(CancellationToken)) where TNotification : INotification
         {
+            Guard.NotNull(notification, nameof(notification));
+
             await this._mediator.Publish(notification, token).ConfigureAwait(false);
         }
 

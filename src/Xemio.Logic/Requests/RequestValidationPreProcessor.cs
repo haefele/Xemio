@@ -13,6 +13,8 @@ namespace Xemio.Logic.Requests
 
         public RequestValidationPreProcessor(IServiceProvider serviceProvider)
         {
+            Guard.NotNull(serviceProvider, nameof(serviceProvider));
+
             this._serviceProvider = serviceProvider;
         }
 

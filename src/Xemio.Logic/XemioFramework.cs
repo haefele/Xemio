@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
@@ -12,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using Sparrow.Json;
 using Xemio.Logic.Configuration;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Services;
@@ -23,6 +19,9 @@ namespace Xemio.Logic
     {
         public static void AddXemioFramework(this IServiceCollection self, IConfiguration configuration)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNull(configuration, nameof(configuration));
+
             self.AddLogging(f =>
             {
                 f.AddDebug();
@@ -36,11 +35,16 @@ namespace Xemio.Logic
 
         private static void AddConfiguration(this IServiceCollection self, IConfiguration configuration)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNull(configuration, nameof(configuration));
+
             self.Configure<DatabaseConfiguration>(configuration.GetSection("Database"));
         }
 
         private static void AddDatabase(this IServiceCollection self)
         {
+            Guard.NotNull(self, nameof(self));
+
             self.AddSingleton<IDocumentStore>(f =>
             {
                 var databaseConfiguration = f.GetRequiredService<IOptions<DatabaseConfiguration>>().Value;
@@ -59,6 +63,8 @@ namespace Xemio.Logic
 
         private static void AddValidators(this IServiceCollection self)
         {
+            Guard.NotNull(self, nameof(self));
+            
             self.Scan(scan =>
             {
                 scan.FromAssemblies(typeof(XemioFramework).Assembly)
@@ -70,6 +76,8 @@ namespace Xemio.Logic
 
         private static void AddMediatR(this IServiceCollection self)
         {
+            Guard.NotNull(self, nameof(self));
+            
             self.AddMediatR(typeof(XemioFramework).Assembly);
 
             self.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
@@ -88,12 +96,14 @@ namespace Xemio.Logic
 
         private static void AddServices(this IServiceCollection self)
         {
+            Guard.NotNull(self, nameof(self));
+
             self.Scan(scan =>
             {
                 scan.FromAssemblies(typeof(XemioFramework).Assembly)
                     .AddClasses(classes => classes
                         .InNamespaces(typeof(ServicesPlaceholder).Namespace)
-                        .Where(f => f.Name.EndsWith("Service") || f.Name.EndsWith("Manager")))
+                        .Where(f => f.Name.EndsWith("Service") || f.Name.EndsWith("Manager") || f.Name.EndsWith("Generator")))
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime();
             });

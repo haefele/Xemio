@@ -14,6 +14,8 @@ namespace Xemio.Logic.Services.Requests
 
         public RequestManager(IServiceProvider serviceProvider)
         {
+            Guard.NotNull(serviceProvider, nameof(serviceProvider));
+            
             this._serviceProvider = serviceProvider;
         }
 
@@ -32,6 +34,9 @@ namespace Xemio.Logic.Services.Requests
 
             public ScopedRequestContext(IServiceScope scope, IRequestContext actualContext)
             {
+                Guard.NotNull(scope, nameof(scope));
+                Guard.NotNull(actualContext, nameof(actualContext));
+
                 this._scope = scope;
                 this._actualContext = actualContext;
             }
@@ -44,11 +49,15 @@ namespace Xemio.Logic.Services.Requests
 
             public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default(CancellationToken))
             {
+                Guard.NotNull(request, nameof(request));
+
                 return this._actualContext.Send(request, token);
             }
 
             public Task Publish<TNotification>(TNotification notification, CancellationToken token = default(CancellationToken)) where TNotification : INotification
             {
+                Guard.NotNull(notification, nameof(notification));
+
                 return this._actualContext.Publish(notification, token);
             }
 

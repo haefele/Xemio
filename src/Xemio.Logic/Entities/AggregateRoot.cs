@@ -40,12 +40,4 @@ namespace Xemio.Logic.Entities
         }
         #endregion
     }
-
-    public class User : AggregateRoot
-    {
-        public string EmailAddress { get; set; }
-        public bool EmailAddressIsVerified { get; set; }
-        
-        public string PasswordHash { get; set; }
-    }
 }
