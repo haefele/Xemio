@@ -17,7 +17,7 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
         private readonly IAsyncDocumentSession _session;
         private readonly IIdGenerator _idGenerator;
 
-        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdGenerator idGenerator)
+        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdGenerator idGenerator, IRequestContext requestContext)
         {
             Guard.NotNull(store, nameof(store));
             Guard.NotNull(session, nameof(session));
