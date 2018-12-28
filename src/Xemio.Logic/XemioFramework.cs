@@ -39,6 +39,8 @@ namespace Xemio.Logic
             Guard.NotNull(configuration, nameof(configuration));
 
             self.Configure<DatabaseConfiguration>(configuration.GetSection("Database"));
+            self.Configure<ServerConfiguration>(configuration.GetSection("Server"));
+            self.Configure<CryptoConfiguration>(configuration.GetSection("Crypto"));
         }
 
         private static void AddDatabase(this IServiceCollection self)

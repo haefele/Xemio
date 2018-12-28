@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents.Session;
@@ -22,21 +23,23 @@ namespace Xemio.Logic.Requests
 
         public User CurrentUser { get; set; }
 
-        public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default(CancellationToken))
+        [DebuggerStepThrough]
+        public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default)
         {
             Guard.NotNull(request, nameof(request));
 
             return await this._mediator.Send(request, token).ConfigureAwait(false);
         }
 
-        public async Task Publish<TNotification>(TNotification notification, CancellationToken token = default(CancellationToken)) where TNotification : INotification
+        [DebuggerStepThrough]
+        public async Task Publish<TNotification>(TNotification notification, CancellationToken token = default) where TNotification : INotification
         {
             Guard.NotNull(notification, nameof(notification));
 
             await this._mediator.Publish(notification, token).ConfigureAwait(false);
         }
 
-        public async Task CommitAsync(CancellationToken token = default(CancellationToken))
+        public async Task CommitAsync(CancellationToken token = default)
         {
             await this._session.SaveChangesAsync(token);
         }

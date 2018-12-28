@@ -7,7 +7,6 @@ using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Entities;
 using Xemio.Logic.Services.IdGenerator;
-using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Xemio.Logic.Requests.Auth.RegisterUser
 {
@@ -17,7 +16,7 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
         private readonly IAsyncDocumentSession _session;
         private readonly IIdGenerator _idGenerator;
 
-        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdGenerator idGenerator, IRequestContext requestContext)
+        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdGenerator idGenerator)
         {
             Guard.NotNull(store, nameof(store));
             Guard.NotNull(session, nameof(session));
@@ -34,7 +33,7 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
             {
                 Id = this._idGenerator.Generate<User>(),
                 EmailAddress = request.EmailAddress,
-                PasswordHash = BCryptNet.EnhancedHashPassword(request.Password),
+                PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
             };
 
             var emailAddressOnlyOnceResult = await this._store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>($"users/{request.EmailAddress}", user.Id, 0), token: cancellationToken);

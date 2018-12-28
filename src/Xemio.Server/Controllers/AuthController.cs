@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Xemio.Client.Data.Actions;
 using Xemio.Logic.Entities;
 using Xemio.Logic.Requests;
+using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
 
 namespace Xemio.Server.Controllers
@@ -23,7 +24,17 @@ namespace Xemio.Server.Controllers
         [Route("Login")]
         public async Task<ActionResult<string>> Login([FromBody]LoginUserAction action, CancellationToken token = default)
         {
+            var loginUserRequest = new LoginUserRequest
+            {
+                EmailAddress = action.EmailAddress,
+                Password = action.Password
+            };
 
+            var authToken = await this._requestContext.Send(loginUserRequest, token);
+
+            await this._requestContext.CommitAsync(token);
+
+            return this.Ok(new { Token = authToken.ToString() });
         }
 
         [HttpPost]
