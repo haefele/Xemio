@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using Raven.Client.ServerWide.Operations;
 using Raven.Embedded;
 using Xemio.Logic.Configuration;
 using Xemio.Logic.Requests;
@@ -64,12 +65,32 @@ namespace Xemio.Logic
                 }
                 else
                 {
+                    EmbeddedServer.Instance.StartServer();
+
                     string databaseName = databaseConfiguration.CreateRandomDatabaseNameForEmbeddedUsage
                         ? Guid.NewGuid().ToString("N")
                         : databaseConfiguration.DatabaseName;
 
-                    EmbeddedServer.Instance.StartServer();
-                    return EmbeddedServer.Instance.GetDocumentStore(databaseName);
+                    // Little workaround for disposing order issue
+                    // SkipCreatingDatabase because we have to attach to store.AfterDispose before store.Maintenance internally subscribes to that event
+                    // And that event subscription happens the first time we use the store.Maintenance instance
+                    var databaseOptions = new DatabaseOptions(databaseName)
+                    {
+                        SkipCreatingDatabase = true
+                    };
+                    var store = EmbeddedServer.Instance.GetDocumentStore(databaseOptions);
+
+                    if (databaseConfiguration.CreateRandomDatabaseNameForEmbeddedUsage)
+                    {
+                        store.AfterDispose += (s, e) =>
+                        {
+                            store.Maintenance.Server.Send(new DeleteDatabasesOperation(databaseName, hardDelete: true));
+                        };
+                    }
+
+                    store.Maintenance.Server.Send(new CreateDatabaseOperation(databaseOptions.DatabaseRecord));
+
+                    return store;
                 }
             });
 

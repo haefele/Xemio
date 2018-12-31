@@ -10,9 +10,9 @@ using Xemio.Logic.Services.Requests;
 
 namespace Xemio.Tests.Playground
 {
-    public abstract class PlaygroundTests
+    public abstract class PlaygroundTests : IDisposable
     {
-        protected IServiceProvider ServiceProvider { get; }
+        protected ServiceProvider ServiceProvider { get; }
         protected IRequestManager RequestManager => this.ServiceProvider.GetService<IRequestManager>();
 
         public PlaygroundTests()
@@ -60,6 +60,11 @@ namespace Xemio.Tests.Playground
 
                 return token.ToString();
             }
+        }
+
+        public void Dispose()
+        {
+            this.ServiceProvider.Dispose();
         }
     }
 }
