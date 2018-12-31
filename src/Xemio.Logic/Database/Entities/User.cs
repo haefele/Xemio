@@ -1,4 +1,4 @@
-﻿namespace Xemio.Logic.Entities
+﻿namespace Xemio.Logic.Database.Entities
 {
     public class User : AggregateRoot
     {

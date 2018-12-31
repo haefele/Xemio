@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents.Session;
-using Xemio.Logic.Entities;
 using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Requests

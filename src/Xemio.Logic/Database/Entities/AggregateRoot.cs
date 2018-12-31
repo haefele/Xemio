@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Xemio.Logic.Entities
+namespace Xemio.Logic.Database.Entities
 {
     public abstract class AggregateRoot : IEquatable<AggregateRoot>
     {
@@ -21,7 +19,7 @@ namespace Xemio.Logic.Entities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((AggregateRoot) obj);
+            return this.Equals((AggregateRoot) obj);
         }
 
         public override int GetHashCode()

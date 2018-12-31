@@ -4,7 +4,7 @@ using MediatR;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
-using Xemio.Logic.Entities;
+using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Requests.Auth.LoginUser

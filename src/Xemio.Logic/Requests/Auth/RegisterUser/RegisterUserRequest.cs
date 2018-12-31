@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using Xemio.Logic.Entities;
+using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Extensions;
 
 namespace Xemio.Logic.Requests.Auth.RegisterUser

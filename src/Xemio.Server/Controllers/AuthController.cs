@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Xemio.Client.Data.Actions;
-using Xemio.Logic.Entities;
+using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
@@ -10,7 +10,6 @@ using Xemio.Logic.Requests.Auth.RegisterUser;
 namespace Xemio.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IRequestContext _requestContext;

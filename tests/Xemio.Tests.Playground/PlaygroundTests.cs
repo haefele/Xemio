@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xemio.Logic;
+using Xemio.Logic.Requests.Auth.LoginUser;
+using Xemio.Logic.Requests.Auth.RegisterUser;
 using Xemio.Logic.Services.Requests;
 
 namespace Xemio.Tests.Playground
@@ -30,6 +33,33 @@ namespace Xemio.Tests.Playground
             collection.AddXemioFramework(configuration);
 
             this.ServiceProvider = collection.BuildServiceProvider();
+        }
+
+        protected async Task<string> CreateUserAndLogin()
+        {
+            using (var context = this.RequestManager.StartRequestContext())
+            {
+                await context.Send(new RegisterUserRequest
+                {
+                    EmailAddress = "haefele@xemio.net",
+                    Password = "12345678"
+                });
+
+                await context.CommitAsync();
+            }
+
+            using (var context = this.RequestManager.StartRequestContext())
+            {
+                var token = await context.Send(new LoginUserRequest
+                {
+                    EmailAddress = "haefele@xemio.net",
+                    Password = "12345678"
+                });
+
+                await context.CommitAsync();
+
+                return token.ToString();
+            }
         }
     }
 }
