@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
     <PackageReference Include="NUlid" Version="1.3.2" />
     <PackageReference Include="RavenDB.Client" Version="4.1.3" />
+    <PackageReference Include="RavenDB.Embedded" Version="4.1.3" />
     <PackageReference Include="Scrutor" Version="3.0.1" />
   </ItemGroup>
 

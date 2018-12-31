@@ -16,8 +16,15 @@ namespace Xemio.Logic.Services.JsonWebToken
 
             this._token = token;
 
-            var json = new JwtBuilder().Decode(token);
-            this._payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            try
+            {
+                var json = new JwtBuilder().Decode(token);
+                this._payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidJsonWebTokenException(token, e);
+            }
         }
 
         protected T Get<T>(string name)

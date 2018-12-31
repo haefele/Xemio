@@ -19,6 +19,8 @@ namespace Xemio.Tests.Playground
                 {
                     ["Database:Urls"] = "http://127.0.0.1:8080",
                     ["Database:DatabaseName"] = "XemioTest",
+                    ["Database:UseEmbeddedTestServer"] = "true",
+                    ["Database:CreateRandomDatabaseNameForEmbeddedUsage"] = "true",
 
                     ["Crypto:AuthTokenSecret"] = "123456789123456789123456789"
                 })

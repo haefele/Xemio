@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth.LoginUser;
+using Xemio.Logic.Requests.Auth.RegisterUser;
 using Xemio.Logic.Services.JsonWebToken;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Xemio.Tests.Playground
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                var result = await context.Send(new LoginUserRequest
+                var result = await context.Send(new RegisterUserRequest
                 {
                     EmailAddress = "haefele@xemio.net",
                     Password = "12345678"
@@ -33,7 +34,7 @@ namespace Xemio.Tests.Playground
                 var result = await context.Send(new LoginUserRequest
                 {
                     EmailAddress = "haefele@xemio.net",
-                    Password = "1232323"
+                    Password = "12345678"
                 });
             }
         }

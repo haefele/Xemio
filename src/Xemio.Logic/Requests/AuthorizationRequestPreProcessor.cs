@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR.Pipeline;
+using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Requests
 {
@@ -12,19 +13,27 @@ namespace Xemio.Logic.Requests
         private static readonly ConcurrentDictionary<Type, bool> _requestTypeRequiresAuthorization = new ConcurrentDictionary<Type, bool>();
 
         private readonly IRequestContext _context;
+        private readonly IJsonWebTokenService _jsonWebTokenService;
 
-        public AuthorizationRequestPreProcessor(IRequestContext context)
+        public AuthorizationRequestPreProcessor(IRequestContext context, IJsonWebTokenService jsonWebTokenService)
         {
             Guard.NotNull(context, nameof(context));
+            Guard.NotNull(jsonWebTokenService, nameof(jsonWebTokenService));
 
             this._context = context;
+            this._jsonWebTokenService = jsonWebTokenService;
         }
 
         public Task Process(T request, CancellationToken cancellationToken)
         {
-            if (this._context.CurrentUser == null && _requestTypeRequiresAuthorization.GetOrAdd(request.GetType(), this.RequestRequiresAuthorization))
-                throw new UnauthorizedRequestException();
-            
+            var authorizationRequired = _requestTypeRequiresAuthorization.GetOrAdd(request.GetType(), this.RequestRequiresAuthorization);
+
+            if (authorizationRequired)
+            {
+                if (this._context.CurrentUser == null || this._jsonWebTokenService.ValidateAuthToken(this._context.CurrentUser) == false)
+                    throw new UnauthorizedRequestException();
+            }
+
             return Task.CompletedTask;
         }
 

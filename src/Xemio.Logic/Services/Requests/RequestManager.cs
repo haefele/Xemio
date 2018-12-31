@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -43,10 +44,13 @@ namespace Xemio.Logic.Services.Requests
 
             public AuthToken CurrentUser
             {
+                [DebuggerStepThrough]
                 get => this._actualContext.CurrentUser;
+                [DebuggerStepThrough]
                 set => this._actualContext.CurrentUser = value;
             }
 
+            [DebuggerStepThrough]
             public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default)
             {
                 Guard.NotNull(request, nameof(request));
@@ -54,6 +58,7 @@ namespace Xemio.Logic.Services.Requests
                 return this._actualContext.Send(request, token);
             }
 
+            [DebuggerStepThrough]
             public Task Publish<TNotification>(TNotification notification, CancellationToken token = default) where TNotification : INotification
             {
                 Guard.NotNull(notification, nameof(notification));
@@ -61,11 +66,13 @@ namespace Xemio.Logic.Services.Requests
                 return this._actualContext.Publish(notification, token);
             }
 
+            [DebuggerStepThrough]
             public Task CommitAsync(CancellationToken token = default)
             {
                 return this._actualContext.CommitAsync(token);
             }
 
+            [DebuggerStepThrough]
             public void Dispose()
             {
                 this._scope.Dispose();

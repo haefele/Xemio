@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using Raven.Embedded;
 using Xemio.Logic.Configuration;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Services;
@@ -51,13 +52,25 @@ namespace Xemio.Logic
             {
                 var databaseConfiguration = f.GetRequiredService<IOptions<DatabaseConfiguration>>().Value;
 
-                var store = new DocumentStore();
-                store.Database = databaseConfiguration.DatabaseName;
-                store.Urls = databaseConfiguration.Urls.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);
-                
-                store.Initialize();
+                if (databaseConfiguration.UseEmbeddedTestServer == false)
+                {
+                    var store = new DocumentStore();
+                    store.Database = databaseConfiguration.DatabaseName;
+                    store.Urls = databaseConfiguration.Urls.Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);
+                    
+                    store.Initialize();
 
-                return store;
+                    return store;
+                }
+                else
+                {
+                    string databaseName = databaseConfiguration.CreateRandomDatabaseNameForEmbeddedUsage
+                        ? Guid.NewGuid().ToString("N")
+                        : databaseConfiguration.DatabaseName;
+
+                    EmbeddedServer.Instance.StartServer();
+                    return EmbeddedServer.Instance.GetDocumentStore(databaseName);
+                }
             });
 
             self.AddScoped<IAsyncDocumentSession>(f => f.GetRequiredService<IDocumentStore>().OpenAsyncSession());
