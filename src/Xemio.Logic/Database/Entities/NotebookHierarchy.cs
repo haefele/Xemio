@@ -32,5 +32,26 @@ namespace Xemio.Logic.Database.Entities
                 this.Notebooks.Add(item);
             }
         }
+
+        public void RemoveNotebook(Notebook notebook)
+        {
+            var parent = this.Notebooks.Flatten(f => f.Notebooks).FirstOrDefault(f => f.Notebooks.Any(d => d.NotebookId == notebook.Id));
+            var item = this.Notebooks.Flatten(f => f.Notebooks).FirstOrDefault(f => f.NotebookId == notebook.Id);
+
+            if (parent != null)
+            {
+                parent.Notebooks.Remove(item);
+            }
+            else
+            {
+                this.Notebooks.Remove(item);
+            }
+        }
+
+        public void UpdateNotebook(Notebook notebook)
+        {
+            this.RemoveNotebook(notebook);
+            this.AddNotebook(notebook);
+        }
     }
 }

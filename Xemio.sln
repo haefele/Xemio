@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{F494EE2C-1AB9-4E4D-80AC-6D5664410DEB}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xemio.Server", "src\Xemio.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{88B83B2F-6CBD-4273-AE4A-2415CD9FEA17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Tests.Playground", "tests\Xemio.Tests.Playground\Xemio.Tests.Playground.csproj", "{72B0D86C-59EA-4493-B713-D149961FE120}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xemio.Tests.Playground", "tests\Xemio.Tests.Playground\Xemio.Tests.Playground.csproj", "{72B0D86C-59EA-4493-B713-D149961FE120}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
