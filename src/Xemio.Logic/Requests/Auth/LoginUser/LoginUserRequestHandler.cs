@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents;
@@ -32,14 +31,14 @@ namespace Xemio.Logic.Requests.Auth.LoginUser
             var userEmailAddress = await this._store.Operations.SendAsync(new GetCompareExchangeValueOperation<string>($"users/{request.EmailAddress}"), token:cancellationToken);
 
             if (userEmailAddress == null)
-                throw new Exception("User does not exist.");
+                throw new NoUserWithEmailAddressExistsException(request.EmailAddress);
             
             string userId = userEmailAddress.Value;
 
             var user = await this._session.LoadAsync<User>(userId, cancellationToken);
 
             if (BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user?.PasswordHash) == false)
-                throw new Exception("Wrong password");
+                throw new IncorrectPasswordException();
 
             return this._jsonWebTokenService.GenerateAuthToken(user?.Id);
         }

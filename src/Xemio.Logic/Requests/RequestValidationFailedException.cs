@@ -5,7 +5,7 @@ using FluentValidation.Results;
 namespace Xemio.Logic.Requests
 {
     [Serializable]
-    public class RequestValidationFailedException : Exception
+    public class RequestValidationFailedException : XemioException
     {
         public IList<ValidationFailure> Errors { get; }
 

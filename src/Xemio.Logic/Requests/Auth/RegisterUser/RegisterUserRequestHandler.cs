@@ -39,7 +39,7 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
             var emailAddressOnlyOnceResult = await this._store.Operations.SendAsync(new PutCompareExchangeValueOperation<string>($"users/{request.EmailAddress}", user.Id, 0), token: cancellationToken);
 
             if (emailAddressOnlyOnceResult.Successful == false)
-                throw new Exception("Email address already exists.");
+                throw new EmailAddressAlreadyInUseException(request.EmailAddress);
 
             await this._session.StoreAsync(user, cancellationToken);
 
