@@ -5,6 +5,7 @@ using Xemio.Logic.Extensions;
 
 namespace Xemio.Logic.Requests.Auth.RegisterUser
 {
+    [UnauthorizedRequest]
     public class RegisterUserRequest : IRequest<User>
     {
         public string EmailAddress { get; set; }

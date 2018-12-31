@@ -5,6 +5,7 @@ using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Requests.Auth.LoginUser
 {
+    [UnauthorizedRequest]
     public class LoginUserRequest : IRequest<AuthToken>
     {
         public string EmailAddress { get; set; }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Entities;
+using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Requests
 {
@@ -21,7 +22,7 @@ namespace Xemio.Logic.Requests
             this._mediator = mediator;
         }
 
-        public User CurrentUser { get; set; }
+        public AuthToken CurrentUser { get; set; }
 
         [DebuggerStepThrough]
         public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default)

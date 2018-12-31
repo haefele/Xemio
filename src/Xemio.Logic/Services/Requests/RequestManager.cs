@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Xemio.Logic.Entities;
 using Xemio.Logic.Requests;
+using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Logic.Services.Requests
 {
@@ -41,27 +41,27 @@ namespace Xemio.Logic.Services.Requests
                 this._actualContext = actualContext;
             }
 
-            public User CurrentUser
+            public AuthToken CurrentUser
             {
-                get { return this._actualContext.CurrentUser; }
-                set { this._actualContext.CurrentUser = value; }
+                get => this._actualContext.CurrentUser;
+                set => this._actualContext.CurrentUser = value;
             }
 
-            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default(CancellationToken))
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken token = default)
             {
                 Guard.NotNull(request, nameof(request));
 
                 return this._actualContext.Send(request, token);
             }
 
-            public Task Publish<TNotification>(TNotification notification, CancellationToken token = default(CancellationToken)) where TNotification : INotification
+            public Task Publish<TNotification>(TNotification notification, CancellationToken token = default) where TNotification : INotification
             {
                 Guard.NotNull(notification, nameof(notification));
 
                 return this._actualContext.Publish(notification, token);
             }
 
-            public Task CommitAsync(CancellationToken token = default(CancellationToken))
+            public Task CommitAsync(CancellationToken token = default)
             {
                 return this._actualContext.CommitAsync(token);
             }
