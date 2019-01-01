@@ -21,15 +21,15 @@ namespace Xemio.Server.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<string>> Login([FromBody]LoginUserAction action, CancellationToken token = default)
+        public async Task<ActionResult<string>> Login(LoginUserAction action, CancellationToken token)
         {
-            var loginUserRequest = new LoginUserRequest
+            var request = new LoginUserRequest
             {
                 EmailAddress = action.EmailAddress,
                 Password = action.Password
             };
 
-            var authToken = await this._requestContext.Send(loginUserRequest, token);
+            var authToken = await this._requestContext.Send(request, token);
 
             await this._requestContext.CommitAsync(token);
 
@@ -38,19 +38,19 @@ namespace Xemio.Server.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<User>> Register([FromBody]RegisterUserAction action, CancellationToken token = default)
+        public async Task<ActionResult> Register(RegisterUserAction action, CancellationToken token)
         {
-            var registerUserRequest = new RegisterUserRequest
+            var request = new RegisterUserRequest
             {
                 EmailAddress = action.EmailAddress,
                 Password = action.Password
             };
 
-            var user = await this._requestContext.Send(registerUserRequest, token).ConfigureAwait(false);
+            await this._requestContext.Send(request, token).ConfigureAwait(false);
 
             await this._requestContext.CommitAsync(token);
 
-            return this.Ok(user);
+            return this.Ok();
         }
     }
 }

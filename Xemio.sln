@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{88B83B2F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xemio.Tests.Playground", "tests\Xemio.Tests.Playground\Xemio.Tests.Playground.csproj", "{72B0D86C-59EA-4493-B713-D149961FE120}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Logic.Tests", "tests\Xemio.Logic.Tests\Xemio.Logic.Tests.csproj", "{65330AEC-337A-4C8E-B643-DC6323437D67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{72B0D86C-59EA-4493-B713-D149961FE120}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B0D86C-59EA-4493-B713-D149961FE120}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B0D86C-59EA-4493-B713-D149961FE120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65330AEC-337A-4C8E-B643-DC6323437D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65330AEC-337A-4C8E-B643-DC6323437D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65330AEC-337A-4C8E-B643-DC6323437D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65330AEC-337A-4C8E-B643-DC6323437D67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 		{A3EC7913-351E-488B-954B-CE180B10FF08} = {7AB43C16-02C5-4E80-802D-F6D79CB69F0D}
 		{070F4E36-FDB3-4365-9697-515049C2FD3B} = {7AB43C16-02C5-4E80-802D-F6D79CB69F0D}
 		{72B0D86C-59EA-4493-B713-D149961FE120} = {88B83B2F-6CBD-4273-AE4A-2415CD9FEA17}
+		{65330AEC-337A-4C8E-B643-DC6323437D67} = {88B83B2F-6CBD-4273-AE4A-2415CD9FEA17}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B92C210-A01C-4B57-AD28-8D935123DB08}

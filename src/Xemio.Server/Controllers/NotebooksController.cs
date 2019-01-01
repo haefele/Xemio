@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests;
+using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
+using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Server.Controllers
 {
@@ -11,6 +16,15 @@ namespace Xemio.Server.Controllers
         public NotebooksController(IRequestContext requestContext)
         {
             this._requestContext = requestContext;
+        }
+        
+        [Route("Hierarchy")]
+        public async Task<ActionResult<NotebookHierarchy>> GetNotebookHierarchy(CancellationToken token)
+        {
+            var request = new GetNotebookHierarchyRequest();
+            var notebookHierarchy = await this._requestContext.Send(request, token);
+
+
         }
     }
 }

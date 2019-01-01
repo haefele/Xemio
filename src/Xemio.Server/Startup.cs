@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xemio.Logic;
+using Xemio.Server.AspNetCore;
 
 namespace Xemio.Server
 {
@@ -25,6 +26,7 @@ namespace Xemio.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHttpsRedirection();
+            app.UseXemioAuthorization();
             app.UseMvc();
         }
     }
