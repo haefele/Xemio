@@ -7,7 +7,7 @@ using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
 
-namespace Xemio.Server.Controllers
+namespace Xemio.Server.Endpoints
 {
     [ApiController]
     [Route("[controller]")]

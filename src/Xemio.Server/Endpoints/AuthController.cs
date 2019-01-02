@@ -6,7 +6,7 @@ using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
 
-namespace Xemio.Server.Controllers
+namespace Xemio.Server.Endpoints
 {
     [ApiController]
     [Route("[controller]")]
