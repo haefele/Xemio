@@ -21,8 +21,9 @@ namespace Xemio.Server.Controllers
             this._mapper = mapper;
         }
         
+        [HttpGet]
         [Route("Hierarchy")]
-        public async Task<ActionResult<NotebookHierarchy>> GetNotebookHierarchy(CancellationToken token)
+        public async Task<ActionResult<NotebookHierarchyDTO>> GetNotebookHierarchy(CancellationToken token)
         {
             var request = new GetNotebookHierarchyRequest();
 

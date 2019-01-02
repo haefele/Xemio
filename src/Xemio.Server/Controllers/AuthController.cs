@@ -1,8 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Xemio.Client.Data.Actions;
-using Xemio.Logic.Database.Entities;
+using Xemio.Client.Data.Endpoints.Auth;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
@@ -21,36 +20,54 @@ namespace Xemio.Server.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<string>> Login(LoginUserAction action, CancellationToken token)
+        public async Task<ActionResult<LoginResult>> Login(LoginAction action, CancellationToken token)
         {
-            var request = new LoginUserRequest
+            try
             {
-                EmailAddress = action.EmailAddress,
-                Password = action.Password
-            };
+                var request = new LoginUserRequest
+                {
+                    EmailAddress = action.EmailAddress,
+                    Password = action.Password
+                };
 
-            var authToken = await this._requestContext.Send(request, token);
+                var authToken = await this._requestContext.Send(request, token);
 
-            await this._requestContext.CommitAsync(token);
+                await this._requestContext.CommitAsync(token);
 
-            return this.Ok(new { Token = authToken.ToString() });
+                return this.Ok(new LoginResult {Token = authToken.ToString()});
+            }
+            catch (IncorrectPasswordException)
+            {
+                return this.NotFound();
+            }
+            catch (NoUserWithEmailAddressExistsException)
+            {
+                return this.NotFound();
+            }
         }
 
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult> Register(RegisterUserAction action, CancellationToken token)
+        public async Task<ActionResult> Register(RegisterAction action, CancellationToken token)
         {
-            var request = new RegisterUserRequest
+            try
             {
-                EmailAddress = action.EmailAddress,
-                Password = action.Password
-            };
+                var request = new RegisterUserRequest
+                {
+                    EmailAddress = action.EmailAddress,
+                    Password = action.Password
+                };
 
-            await this._requestContext.Send(request, token).ConfigureAwait(false);
+                await this._requestContext.Send(request, token).ConfigureAwait(false);
 
-            await this._requestContext.CommitAsync(token);
+                await this._requestContext.CommitAsync(token);
 
-            return this.Ok();
+                return this.Ok();
+            }
+            catch (EmailAddressAlreadyInUseException)
+            {
+                return this.Conflict();
+            }
         }
     }
 }

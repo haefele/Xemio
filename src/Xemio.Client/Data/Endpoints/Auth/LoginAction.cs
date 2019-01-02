@@ -1,6 +1,6 @@
-﻿namespace Xemio.Client.Data.Actions
+﻿namespace Xemio.Client.Data.Endpoints.Auth
 {
-    public class RegisterUserAction
+    public class LoginAction
     {
         public string EmailAddress { get; set; }
         public string Password { get; set; }
