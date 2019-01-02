@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
@@ -33,6 +34,7 @@ namespace Xemio.Logic
             self.AddValidators();
             self.AddMediatR();
             self.AddServices();
+            self.AddAutoMapper();
         }
 
         private static void AddConfiguration(this IServiceCollection self, IConfiguration configuration)

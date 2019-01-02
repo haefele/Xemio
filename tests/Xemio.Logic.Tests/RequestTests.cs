@@ -1,17 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Raven.Client.Documents;
 using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
 using Xemio.Logic.Services.Requests;
 
 namespace Xemio.Logic.Tests
 {
-    public abstract class RequestTests
+    public abstract class RequestTests : IDisposable
     {
         protected ServiceProvider ServiceProvider { get; }
         protected IRequestManager RequestManager => this.ServiceProvider.GetService<IRequestManager>();
+        protected IMapper Mapper => this.ServiceProvider.GetService<IMapper>();
 
         public RequestTests()
         {
@@ -57,6 +63,32 @@ namespace Xemio.Logic.Tests
 
                 return token.ToString();
             }
+        }
+
+        protected async Task WaitForUserToContinueTheTest()
+        {
+            var store = this.ServiceProvider.GetService<IDocumentStore>();
+            var databaseNameEncoded = Uri.EscapeDataString(store.Database);
+
+            var documentsPage = store.Urls[0] + "/studio/index.html#databases/documents?&database=" + databaseNameEncoded + "&withStop=true";
+
+            Process.Start(new ProcessStartInfo("cmd", $"/c start \"Stop & look at Studio\" \"{documentsPage}\""));
+
+            do
+            {
+                await Task.Delay(500);
+
+                using (var session = store.OpenSession())
+                {
+                    if (session.Advanced.Exists("Debug/Done"))
+                    {
+                        session.Delete("Debug/Done");
+                        session.SaveChanges();
+
+                        break;
+                    }
+                }
+            } while (true);
         }
 
         public void Dispose()

@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Xemio.Client.Data.Entities
 {
-    class NotebookHierarchyDTO
+    public class NotebookHierarchyDTO
     {
+        public string UserId { get; set; }
+        public List<NotebookHierarchyItemDTO> Notebooks { get; set; }
     }
 }

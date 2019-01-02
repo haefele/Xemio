@@ -1,10 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Xemio.Client.Data.Entities;
 using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
-using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Server.Controllers
 {
@@ -12,19 +13,25 @@ namespace Xemio.Server.Controllers
     public class NotebooksController : ControllerBase
     {
         private readonly IRequestContext _requestContext;
+        private readonly IMapper _mapper;
 
-        public NotebooksController(IRequestContext requestContext)
+        public NotebooksController(IRequestContext requestContext, IMapper mapper)
         {
             this._requestContext = requestContext;
+            this._mapper = mapper;
         }
         
         [Route("Hierarchy")]
         public async Task<ActionResult<NotebookHierarchy>> GetNotebookHierarchy(CancellationToken token)
         {
             var request = new GetNotebookHierarchyRequest();
+
             var notebookHierarchy = await this._requestContext.Send(request, token);
+            
+            await this._requestContext.CommitAsync(token);
 
-
+            var result = this._mapper.Map<NotebookHierarchy, NotebookHierarchyDTO>(notebookHierarchy);
+            return this.Ok(result);
         }
     }
 }
