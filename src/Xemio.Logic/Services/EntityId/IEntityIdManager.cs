@@ -1,9 +1,10 @@
-﻿namespace Xemio.Logic.Services.IdGenerator
+﻿namespace Xemio.Logic.Services.EntityId
 {
-    public interface IIdManager
+    public interface IEntityIdManager
     {
         string GenerateNew<T>();
         string TrimCollectionNameFromId<T>(string idWithCollectionName);
         string AddCollectionName<T>(string idWithoutCollectionName);
+        string GenerateNotebookHierarchyId(string userId);
     }
 }

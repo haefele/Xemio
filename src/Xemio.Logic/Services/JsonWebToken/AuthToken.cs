@@ -1,18 +1,18 @@
 ﻿using Xemio.Logic.Database.Entities;
-using Xemio.Logic.Services.IdGenerator;
+using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Logic.Services.JsonWebToken
 {
     public class AuthToken : JsonWebToken
     {
-        private readonly IIdManager _idManager;
+        private readonly IEntityIdManager _entityIdManager;
 
-        public AuthToken(string token, IIdManager idManager) 
+        public AuthToken(string token, IEntityIdManager entityIdManager) 
             : base (token)
         {
-            this._idManager = idManager;
+            this._entityIdManager = entityIdManager;
         }
 
-        public string UserId => this._idManager.AddCollectionName<User>(this.Get<string>(JsonWebTokenService.AuthTokenClaims.UserId));
+        public string UserId => this._entityIdManager.AddCollectionName<User>(this.Get<string>(JsonWebTokenService.AuthTokenClaims.UserId));
     }
 }

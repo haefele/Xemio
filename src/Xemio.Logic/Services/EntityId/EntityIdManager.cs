@@ -1,13 +1,13 @@
 ﻿using NUlid;
 using Raven.Client.Documents;
 
-namespace Xemio.Logic.Services.IdGenerator
+namespace Xemio.Logic.Services.EntityId
 {
-    public class IdManager : IIdManager
+    public class EntityIdManager : IEntityIdManager
     {
         private readonly IDocumentStore _documentStore;
 
-        public IdManager(IDocumentStore documentStore)
+        public EntityIdManager(IDocumentStore documentStore)
         {
             Guard.NotNull(documentStore, nameof(documentStore));
 
@@ -37,6 +37,11 @@ namespace Xemio.Logic.Services.IdGenerator
             var idPrefix = this._documentStore.Conventions.TransformTypeCollectionNameToDocumentIdPrefix(collectionName);
 
             return idPrefix + "/" + idWithoutCollectionName;
+        }
+
+        public string GenerateNotebookHierarchyId(string userId)
+        {
+            return userId + "/notebookHierarchy";
         }
     }
 }

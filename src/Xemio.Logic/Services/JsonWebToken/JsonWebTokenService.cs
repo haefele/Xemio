@@ -6,22 +6,22 @@ using Microsoft.Extensions.Options;
 using Xemio.Logic.Configuration;
 using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Extensions;
-using Xemio.Logic.Services.IdGenerator;
+using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Logic.Services.JsonWebToken
 {
     public class JsonWebTokenService : IJsonWebTokenService
     {
         private readonly IOptionsMonitor<CryptoConfiguration> _cryptoConfiguration;
-        private readonly IIdManager _idManager;
+        private readonly IEntityIdManager _entityIdManager;
 
-        public JsonWebTokenService(IOptionsMonitor<CryptoConfiguration> cryptoConfiguration, IIdManager idManager)
+        public JsonWebTokenService(IOptionsMonitor<CryptoConfiguration> cryptoConfiguration, IEntityIdManager entityIdManager)
         {
             Guard.NotNull(cryptoConfiguration, nameof(cryptoConfiguration));
-            Guard.NotNull(idManager, nameof(idManager));
+            Guard.NotNull(entityIdManager, nameof(entityIdManager));
 
             this._cryptoConfiguration = cryptoConfiguration;
-            this._idManager = idManager;
+            this._entityIdManager = entityIdManager;
         }
 
         public static class AuthTokenClaims
@@ -34,11 +34,11 @@ namespace Xemio.Logic.Services.JsonWebToken
 
             var data = new Dictionary<string, object>
             {
-                [AuthTokenClaims.UserId] = this._idManager.TrimCollectionNameFromId<User>(user.Id),
+                [AuthTokenClaims.UserId] = this._entityIdManager.TrimCollectionNameFromId<User>(user.Id),
             };
 
             string token = this.GenerateToken(data, this._cryptoConfiguration.CurrentValue.AuthTokenSecret);
-            return new AuthToken(token, this._idManager);
+            return new AuthToken(token, this._entityIdManager);
         }
         public bool ValidateAuthToken(AuthToken loginToken)
         {

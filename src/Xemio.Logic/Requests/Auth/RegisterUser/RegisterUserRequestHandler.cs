@@ -6,7 +6,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Database.Entities;
-using Xemio.Logic.Services.IdGenerator;
+using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Logic.Requests.Auth.RegisterUser
 {
@@ -14,24 +14,24 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
     {
         private readonly IDocumentStore _store;
         private readonly IAsyncDocumentSession _session;
-        private readonly IIdManager _idManager;
+        private readonly IEntityIdManager _entityIdManager;
 
-        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdManager idManager)
+        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IEntityIdManager entityIdManager)
         {
             Guard.NotNull(store, nameof(store));
             Guard.NotNull(session, nameof(session));
-            Guard.NotNull(idManager, nameof(idManager));
+            Guard.NotNull(entityIdManager, nameof(entityIdManager));
             
             this._store = store;
             this._session = session;
-            this._idManager = idManager;
+            this._entityIdManager = entityIdManager;
         }
 
         public async Task<User> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
         {
             var user = new User
             {
-                Id = this._idManager.GenerateNew<User>(),
+                Id = this._entityIdManager.GenerateNew<User>(),
                 EmailAddress = request.EmailAddress,
                 PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
             };

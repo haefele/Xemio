@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Xemio.Logic.Requests;
-using Xemio.Logic.Services.IdGenerator;
+using Xemio.Logic.Services.EntityId;
 using Xemio.Logic.Services.JsonWebToken;
 
 namespace Xemio.Server.AspNetCore
@@ -17,7 +17,7 @@ namespace Xemio.Server.AspNetCore
         {
             self.Use(async (context, next) =>
             {
-                var idManager = context.RequestServices.GetService<IIdManager>();
+                var idManager = context.RequestServices.GetService<IEntityIdManager>();
 
                 var authorizationHeader = context.Request.Headers["Authorization"];
                 var token = ParseAuthorizationHeader(authorizationHeader, idManager);
@@ -29,7 +29,7 @@ namespace Xemio.Server.AspNetCore
             });
         }
 
-        private static AuthToken ParseAuthorizationHeader(string authorizationHeader, IIdManager idManager)
+        private static AuthToken ParseAuthorizationHeader(string authorizationHeader, IEntityIdManager entityIdManager)
         {
             if (string.IsNullOrWhiteSpace(authorizationHeader))
                 return null;
@@ -44,7 +44,7 @@ namespace Xemio.Server.AspNetCore
 
             try
             {
-                return new AuthToken(parts[1], idManager);
+                return new AuthToken(parts[1], entityIdManager);
             }
             catch (InvalidJsonWebTokenException)
             {

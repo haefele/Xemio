@@ -4,7 +4,7 @@ using MediatR;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
-using Xemio.Logic.Services.IdGenerator;
+using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
 {
@@ -12,17 +12,17 @@ namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
     {
         private readonly IAsyncDocumentSession _session;
         private readonly IRequestContext _context;
-        private readonly IIdManager _idManager;
+        private readonly IEntityIdManager _entityIdManager;
 
-        public CreateNotebookRequestHandler(IAsyncDocumentSession session, IRequestContext context, IIdManager idManager)
+        public CreateNotebookRequestHandler(IAsyncDocumentSession session, IRequestContext context, IEntityIdManager entityIdManager)
         {
             Guard.NotNull(session, nameof(session));
             Guard.NotNull(context, nameof(context));
-            Guard.NotNull(idManager, nameof(idManager));
+            Guard.NotNull(entityIdManager, nameof(entityIdManager));
 
             this._session = session;
             this._context = context;
-            this._idManager = idManager;
+            this._entityIdManager = entityIdManager;
         }
 
         public async Task<Notebook> Handle(CreateNotebookRequest request, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
 
             var notebook = new Notebook
             {
-                Id = this._idManager.GenerateNew<Notebook>(),
+                Id = this._entityIdManager.GenerateNew<Notebook>(),
                 ParentNotebookId = actualParentNotebookId,
                 UserId = this._context.CurrentUser.UserId,
                 Name = request.Name
