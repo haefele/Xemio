@@ -9,6 +9,7 @@ using Xemio.Logic.Requests.Auth.RegisterUser;
 namespace Xemio.Server.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IRequestContext _requestContext;
@@ -18,8 +19,7 @@ namespace Xemio.Server.Controllers
             this._requestContext = requestContext;
         }
 
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<LoginResult>> Login(LoginAction action, CancellationToken token)
         {
             try
@@ -46,8 +46,7 @@ namespace Xemio.Server.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterAction action, CancellationToken token)
         {
             try

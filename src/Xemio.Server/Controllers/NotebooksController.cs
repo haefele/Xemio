@@ -10,6 +10,7 @@ using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
 namespace Xemio.Server.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class NotebooksController : ControllerBase
     {
         private readonly IRequestContext _requestContext;
@@ -21,8 +22,7 @@ namespace Xemio.Server.Controllers
             this._mapper = mapper;
         }
         
-        [HttpGet]
-        [Route("Hierarchy")]
+        [HttpGet("Hierarchy")]
         public async Task<ActionResult<NotebookHierarchyDTO>> GetNotebookHierarchy(CancellationToken token)
         {
             var request = new GetNotebookHierarchyRequest();

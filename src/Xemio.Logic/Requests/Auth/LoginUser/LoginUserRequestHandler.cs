@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
-using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Database.Entities;
