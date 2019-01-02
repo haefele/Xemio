@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Xemio.Logic.Extensions;
 
 namespace Xemio.Logic.AutoMapper.ValueConverter
 {
@@ -6,12 +7,7 @@ namespace Xemio.Logic.AutoMapper.ValueConverter
     {
         public string Convert(string sourceMember, ResolutionContext context)
         {
-            var slashIndex = sourceMember.LastIndexOf('/');
-
-            if (slashIndex == -1)
-                return sourceMember;
-
-            return sourceMember.Substring(slashIndex + 1);
+            return sourceMember.TrimCollectionNameFromId();
         }
     }
 }

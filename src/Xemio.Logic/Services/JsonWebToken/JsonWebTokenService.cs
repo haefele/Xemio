@@ -4,6 +4,7 @@ using JWT.Algorithms;
 using JWT.Builder;
 using Microsoft.Extensions.Options;
 using Xemio.Logic.Configuration;
+using Xemio.Logic.Extensions;
 
 namespace Xemio.Logic.Services.JsonWebToken
 {
@@ -28,7 +29,7 @@ namespace Xemio.Logic.Services.JsonWebToken
 
             var data = new Dictionary<string, object>
             {
-                [AuthTokenClaims.UserId] = userId,
+                [AuthTokenClaims.UserId] = userId.TrimCollectionNameFromId(),
             };
 
             string token = this.GenerateToken(data, this._cryptoConfiguration.CurrentValue.AuthTokenSecret);
