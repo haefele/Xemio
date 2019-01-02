@@ -4,7 +4,6 @@ using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Requests.Notebooks.CreateNotebook;
 using Xemio.Logic.Requests.Notebooks.GetNotebookHierarchy;
 using Xemio.Logic.Requests.Notebooks.UpdateNotebook;
-using Xemio.Logic.Services.JsonWebToken;
 using Xunit;
 
 namespace Xemio.Logic.Tests.Requests
@@ -27,7 +26,7 @@ namespace Xemio.Logic.Tests.Requests
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var notebook = await context.Send(new CreateNotebookRequest
                 {
@@ -42,7 +41,7 @@ namespace Xemio.Logic.Tests.Requests
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var childNotebook = await context.Send(new CreateNotebookRequest
                 {
@@ -57,7 +56,7 @@ namespace Xemio.Logic.Tests.Requests
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var childNotebook = await context.Send(new CreateNotebookRequest
                 {
@@ -72,7 +71,7 @@ namespace Xemio.Logic.Tests.Requests
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var updatedChildNotebook = await context.Send(new UpdateNotebookRequest
                 {
@@ -86,7 +85,7 @@ namespace Xemio.Logic.Tests.Requests
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var hierarchy = await context.Send(new GetNotebookHierarchyRequest());
 

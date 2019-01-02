@@ -12,31 +12,31 @@ namespace Xemio.Tests.Playground
         [Fact]
         public async Task Playground()
         {
-            string token;
+            //AuthToken token;
 
-            using (var context = this.RequestManager.StartRequestContext())
-            {
-                var result = await context.Send(new RegisterUserRequest
-                {
-                    EmailAddress = "haefele@xemio.net",
-                    Password = "12345678"
-                });
+            //using (var context = this.RequestManager.StartRequestContext())
+            //{
+            //    var result = await context.Send(new RegisterUserRequest
+            //    {
+            //        EmailAddress = "haefele@xemio.net",
+            //        Password = "12345678"
+            //    });
 
-                await context.CommitAsync();
+            //    await context.CommitAsync();
 
-                token = result.ToString();
-            }
+            //    token = result;
+            //}
 
-            using (var context = this.RequestManager.StartRequestContext())
-            {
-                context.CurrentUser = new AuthToken(token);
+            //using (var context = this.RequestManager.StartRequestContext())
+            //{
+            //    context.CurrentUser = token;
 
-                var result = await context.Send(new LoginUserRequest
-                {
-                    EmailAddress = "haefele@xemio.net",
-                    Password = "12345678"
-                });
-            }
+            //    var result = await context.Send(new LoginUserRequest
+            //    {
+            //        EmailAddress = "haefele@xemio.net",
+            //        Password = "12345678"
+            //    });
+            //}
         }
     }
 }

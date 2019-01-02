@@ -14,7 +14,7 @@ namespace Xemio.Tests.Playground
 
             using (var context = this.RequestManager.StartRequestContext())
             {
-                context.CurrentUser = new AuthToken(authToken);
+                context.CurrentUser = authToken;
 
                 var notebook = await context.Send(new CreateNotebookRequest
                 {

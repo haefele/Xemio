@@ -12,17 +12,17 @@ namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
     {
         private readonly IAsyncDocumentSession _session;
         private readonly IRequestContext _context;
-        private readonly IIdGenerator _idGenerator;
+        private readonly IIdManager _idManager;
 
-        public CreateNotebookRequestHandler(IAsyncDocumentSession session, IRequestContext context, IIdGenerator idGenerator)
+        public CreateNotebookRequestHandler(IAsyncDocumentSession session, IRequestContext context, IIdManager idManager)
         {
             Guard.NotNull(session, nameof(session));
             Guard.NotNull(context, nameof(context));
-            Guard.NotNull(idGenerator, nameof(idGenerator));
+            Guard.NotNull(idManager, nameof(idManager));
 
             this._session = session;
             this._context = context;
-            this._idGenerator = idGenerator;
+            this._idManager = idManager;
         }
 
         public async Task<Notebook> Handle(CreateNotebookRequest request, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
 
             var notebook = new Notebook
             {
-                Id = this._idGenerator.Generate<Notebook>(),
+                Id = this._idManager.GenerateNew<Notebook>(),
                 ParentNotebookId = actualParentNotebookId,
                 UserId = this._context.CurrentUser.UserId,
                 Name = request.Name

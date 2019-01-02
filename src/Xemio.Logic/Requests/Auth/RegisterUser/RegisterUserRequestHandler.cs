@@ -14,24 +14,24 @@ namespace Xemio.Logic.Requests.Auth.RegisterUser
     {
         private readonly IDocumentStore _store;
         private readonly IAsyncDocumentSession _session;
-        private readonly IIdGenerator _idGenerator;
+        private readonly IIdManager _idManager;
 
-        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdGenerator idGenerator)
+        public RegisterUserRequestHandler(IDocumentStore store, IAsyncDocumentSession session, IIdManager idManager)
         {
             Guard.NotNull(store, nameof(store));
             Guard.NotNull(session, nameof(session));
-            Guard.NotNull(idGenerator, nameof(idGenerator));
+            Guard.NotNull(idManager, nameof(idManager));
             
             this._store = store;
             this._session = session;
-            this._idGenerator = idGenerator;
+            this._idManager = idManager;
         }
 
         public async Task<User> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
         {
             var user = new User
             {
-                Id = this._idGenerator.Generate<User>(),
+                Id = this._idManager.GenerateNew<User>(),
                 EmailAddress = request.EmailAddress,
                 PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
             };

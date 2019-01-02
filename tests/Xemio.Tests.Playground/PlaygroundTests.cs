@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Xemio.Logic;
 using Xemio.Logic.Requests.Auth.LoginUser;
 using Xemio.Logic.Requests.Auth.RegisterUser;
+using Xemio.Logic.Services.JsonWebToken;
 using Xemio.Logic.Services.Requests;
 
 namespace Xemio.Tests.Playground
@@ -35,7 +36,7 @@ namespace Xemio.Tests.Playground
             this.ServiceProvider = collection.BuildServiceProvider();
         }
 
-        protected async Task<string> CreateUserAndLogin()
+        protected async Task<AuthToken> CreateUserAndLogin()
         {
             using (var context = this.RequestManager.StartRequestContext())
             {
@@ -58,7 +59,7 @@ namespace Xemio.Tests.Playground
 
                 await context.CommitAsync();
 
-                return token.ToString();
+                return token;
             }
         }
 

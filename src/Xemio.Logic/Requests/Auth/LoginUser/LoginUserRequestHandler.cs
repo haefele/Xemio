@@ -30,10 +30,13 @@ namespace Xemio.Logic.Requests.Auth.LoginUser
                 .Where(f => f.Id == RavenQuery.CmpXchg<string>($"users/{request.EmailAddress}"))
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user?.PasswordHash) == false)
+            if (user == null)
+                throw new NoUserWithEmailAddressExistsException(request.EmailAddress);
+
+            if (BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash) == false)
                 throw new IncorrectPasswordException();
 
-            return this._jsonWebTokenService.GenerateAuthToken(user?.Id);
+            return this._jsonWebTokenService.GenerateAuthToken(user);
         }
     }
 }
