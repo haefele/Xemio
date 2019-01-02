@@ -15,6 +15,7 @@ using Raven.Embedded;
 using Xemio.Logic.Configuration;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Services;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace Xemio.Logic
 {
@@ -34,7 +35,7 @@ namespace Xemio.Logic
             self.AddValidators();
             self.AddMediatR();
             self.AddServices();
-            self.AddAutoMapper();
+            self.AddMapper();
         }
 
         private static void AddConfiguration(this IServiceCollection self, IConfiguration configuration)
@@ -145,6 +146,15 @@ namespace Xemio.Logic
                     .AsImplementedInterfaces()
                     .WithSingletonLifetime();
             });
+        }
+
+        private static void AddMapper(this IServiceCollection self)
+        {
+            Guard.NotNull(self, nameof(self));
+
+            self.AddAutoMapper();
+
+            self.BuildServiceProvider().GetService<IConfigurationProvider>().AssertConfigurationIsValid();
         }
     }
 }
