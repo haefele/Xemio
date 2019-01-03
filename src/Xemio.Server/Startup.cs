@@ -19,7 +19,13 @@ namespace Xemio.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(f =>
+                {
+                    f.Filters.Add<XemioExceptionFilterAttribute>();
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddXemioFramework(this._configuration);
         }
 

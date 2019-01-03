@@ -3,7 +3,7 @@
 namespace Xemio.Logic.Requests.Auth.RegisterUser
 {
     [Serializable]
-    public class EmailAddressAlreadyInUseException : Exception
+    public class EmailAddressAlreadyInUseException : XemioException
     {
         public string EmailAddress { get; }
 
