@@ -23,51 +23,33 @@ namespace Xemio.Server.Endpoints
         [HttpPost("Login")]
         public async Task<ActionResult<LoginResult>> Login(LoginAction action, CancellationToken token)
         {
-            try
+            var request = new LoginUserRequest
             {
-                var request = new LoginUserRequest
-                {
-                    EmailAddress = action.EmailAddress,
-                    Password = action.Password
-                };
+                EmailAddress = action.EmailAddress,
+                Password = action.Password
+            };
 
-                var authToken = await this._requestContext.Send(request, token);
+            var authToken = await this._requestContext.Send(request, token);
 
-                await this._requestContext.CommitAsync(token);
+            await this._requestContext.CommitAsync(token);
 
-                return this.Ok(new LoginResult {Token = authToken.ToString()});
-            }
-            catch (IncorrectPasswordException)
-            {
-                return this.NotFound();
-            }
-            catch (NoUserWithEmailAddressExistsException)
-            {
-                return this.NotFound();
-            }
+            return this.Ok(new LoginResult {Token = authToken.ToString()});
         }
 
         [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterAction action, CancellationToken token)
         {
-            try
+            var request = new RegisterUserRequest
             {
-                var request = new RegisterUserRequest
-                {
-                    EmailAddress = action.EmailAddress,
-                    Password = action.Password
-                };
+                EmailAddress = action.EmailAddress,
+                Password = action.Password
+            };
 
-                await this._requestContext.Send(request, token).ConfigureAwait(false);
+            await this._requestContext.Send(request, token).ConfigureAwait(false);
 
-                await this._requestContext.CommitAsync(token);
+            await this._requestContext.CommitAsync(token);
 
-                return this.Ok();
-            }
-            catch (EmailAddressAlreadyInUseException)
-            {
-                return this.Conflict();
-            }
+            return this.Ok();
         }
     }
 }

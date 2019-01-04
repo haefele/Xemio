@@ -17,7 +17,9 @@ namespace Xemio.Logic.Requests.Auth.LoginUser
         public LoginUserRequestValidator()
         {
             this.RuleFor(f => f.EmailAddress).NotEmpty().EmailAddress().NoSurroundingWhitespace();
-            this.RuleFor(f => f.Password).NotEmpty().MinimumLength(8);
+            
+            // Do not check MinimumLength here because we might change it in the future and still want our older users to be able to login
+            this.RuleFor(f => f.Password).NotEmpty(); 
         }
     }
 }

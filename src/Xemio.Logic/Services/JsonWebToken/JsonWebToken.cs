@@ -23,7 +23,7 @@ namespace Xemio.Logic.Services.JsonWebToken
             }
             catch (Exception e)
             {
-                throw new InvalidJsonWebTokenException(token, e);
+                throw new ArgumentException(string.Empty, nameof(token), e);
             }
         }
 

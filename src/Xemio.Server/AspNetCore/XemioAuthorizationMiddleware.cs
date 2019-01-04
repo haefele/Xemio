@@ -45,7 +45,7 @@ namespace Xemio.Server.AspNetCore
             {
                 return new AuthToken(parts[1], entityIdManager);
             }
-            catch (InvalidJsonWebTokenException)
+            catch (Exception)
             {
                 return null;
             }
