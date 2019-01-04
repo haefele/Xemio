@@ -10,10 +10,10 @@ namespace Xemio.Logic.AutoMapper.Profiles
         public NotebooksProfile()
         {
             this.CreateMap<NotebookHierarchy, NotebookHierarchyDTO>()
-                .ForMember(f => f.UserId, o => o.ConvertUsing<TrimCollectionNameFromIdConverter, string>(f => f.UserId));
+                .ForMember(f => f.UserId, o => o.ConvertUsing<TrimCollectionNameFromIdConverter<User>, string>(f => f.UserId));
 
             this.CreateMap<NotebookHierarchyItem, NotebookHierarchyItemDTO>()
-                .ForMember(f => f.Id, o => o.ConvertUsing<TrimCollectionNameFromIdConverter, string>(f => f.NotebookId))
+                .ForMember(f => f.Id, o => o.ConvertUsing<TrimCollectionNameFromIdConverter<Notebook>, string>(f => f.NotebookId))
                 .ForMember(f => f.Name, o => o.MapFrom(f => f.NotebookName));
         }
     }

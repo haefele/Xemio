@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Extensions;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth;
 using Xemio.Logic.Requests.Notebooks;
+using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Server.AspNetCore
 {
     public static class XemioExceptionHandler
     {
-        private static readonly Dictionary<Type, (int statusCode, string title, Func<Exception, string> detailFactory, Func<Exception, ProblemDetails> problemDetailsFactory)> _exceptionHandlers = new Dictionary<Type, (int, string, Func<Exception, string>, Func<Exception, ProblemDetails>)>();
+        private static readonly Dictionary<Type, (int statusCode, string title, Func<Exception, IServiceProvider, string> detailFactory, Func<Exception, IServiceProvider, ProblemDetails> problemDetailsFactory)> _exceptionHandlers = new Dictionary<Type, (int, string, Func<Exception, IServiceProvider, string>, Func<Exception, IServiceProvider, ProblemDetails>)>();
 
         static XemioExceptionHandler()
         {
@@ -31,7 +34,7 @@ namespace Xemio.Server.AspNetCore
 
             Handle<EmailAddressAlreadyInUseException>(StatusCodes.Status409Conflict, "Registration failed", "Email address is already in use.");
 
-            Handle<NotebookDoesNotExistException>(StatusCodes.Status404NotFound, "Notebook not found", "The specified notebook does not exist.");
+            Handle<NotebookDoesNotExistException>(StatusCodes.Status404NotFound, "Notebook not found", (e, s) => $"The notebook \"{s.GetService<IEntityIdManager>().TrimCollectionNameFromId<Notebook>(e.NotebookId)}\" does not exist.");
 
             Handle<RequestAuthorizationAttributeMissingException>(StatusCodes.Status500InternalServerError, "Authorization attribute missing", f => $"The request \"{f.RequestType.FullName}\" is missing a authorization attribute.");
         }
@@ -39,15 +42,20 @@ namespace Xemio.Server.AspNetCore
         private static void Handle<T>(int statusCode, string title, string detail, Func<T, ProblemDetails> problemDetailsFactory = null)
             where T : Exception
         {
-            Handle<T>(statusCode, title, f => detail, problemDetailsFactory);
+            Handle(statusCode, title, f => detail, problemDetailsFactory);
         }
         private static void Handle<T>(int statusCode, string title, Func<T, string> detail, Func<T, ProblemDetails> problemDetailsFactory = null)
             where T : Exception
         {
-            _exceptionHandlers.Add(typeof(T), (statusCode, title, e => detail.Invoke((T)e), e => problemDetailsFactory?.Invoke((T)e)));
+            Handle(statusCode, title, (s, e) => detail(s), problemDetailsFactory);
+        }
+        private static void Handle<T>(int statusCode, string title, Func<T, IServiceProvider, string> detail, Func<T, ProblemDetails> problemDetailsFactory = null)
+            where T : Exception
+        {
+            _exceptionHandlers.Add(typeof(T), (statusCode, title, (e, s) => detail.Invoke((T)e, s), (e, s) => problemDetailsFactory?.Invoke((T)e)));
         }
 
-        public static ProblemDetails GetError(Exception exception)
+        public static ProblemDetails GetError(Exception exception, IServiceProvider requestServices)
         {
             var exceptionType = exception.GetType();
 
@@ -61,28 +69,12 @@ namespace Xemio.Server.AspNetCore
             
             var handler = _exceptionHandlers[exceptionType];
 
-            var problemDetails = handler.problemDetailsFactory(exception) ?? new ProblemDetails();
+            var problemDetails = handler.problemDetailsFactory(exception, requestServices) ?? new ProblemDetails();
             problemDetails.Status = handler.statusCode;
             problemDetails.Title = handler.title;
-            problemDetails.Detail = handler.detailFactory(exception);
+            problemDetails.Detail = handler.detailFactory(exception, requestServices);
 
             return problemDetails;
         }
-    }
-
-    public class BadRequestProblemDetails : ProblemDetails
-    {
-        public BadRequestProblemDetails()
-        {
-            this.Errors = new List<ValidationError>();
-        }
-
-        public List<ValidationError> Errors { get; set; }
-    }
-
-    public class ValidationError
-    {
-        public string PropertyName { get; set; }
-        public string Error { get; set; }
     }
 }
