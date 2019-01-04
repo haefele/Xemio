@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xemio.Logic.Requests.Auth.LoginUser
+namespace Xemio.Logic.Requests.Auth
 {
     [Serializable]
     public class NoUserWithEmailAddressExistsException : XemioException

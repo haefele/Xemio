@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xemio.Logic.Requests.Notebooks.UpdateNotebook
+namespace Xemio.Logic.Requests.Notebooks
 {
     [Serializable]
     public class NotebookDoesNotExistException : XemioException

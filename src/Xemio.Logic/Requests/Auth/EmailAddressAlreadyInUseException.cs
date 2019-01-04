@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xemio.Logic.Requests.Auth.RegisterUser
+namespace Xemio.Logic.Requests.Auth
 {
     [Serializable]
     public class EmailAddressAlreadyInUseException : XemioException
