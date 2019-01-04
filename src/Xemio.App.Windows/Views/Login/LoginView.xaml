@@ -11,6 +11,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Button Content="Button"
+                HorizontalAlignment="Left"
+                Margin="627,432,0,0"
+                VerticalAlignment="Top"
+                Command="{Binding Login}" />
 
     </Grid>
 </Page>

@@ -170,6 +170,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xemio.Client\Xemio.Client.csproj">
+      <Project>{8D888DA9-5E2F-4B1D-BD69-95695D4EEA5F}</Project>
+      <Name>Xemio.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
