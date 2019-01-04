@@ -47,7 +47,7 @@ namespace Xemio.Logic.Requests.Notebooks.CreateNotebook
             await this._session.StoreAsync(notebook, cancellationToken);
 
             var hierarchy = await this._context.Send(new GetNotebookHierarchyRequest(), cancellationToken);
-            hierarchy.AddNotebook(notebook);
+            hierarchy.AddNewNotebook(notebook);
 
             return notebook;
         }

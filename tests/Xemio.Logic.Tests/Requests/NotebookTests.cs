@@ -73,11 +73,11 @@ namespace Xemio.Logic.Tests.Requests
             {
                 context.CurrentUser = authToken;
 
-                var updatedChildNotebook = await context.Send(new UpdateNotebookRequest
+                var updatedNotebook = await context.Send(new UpdateNotebookRequest
                 {
-                    NotebookId = childNotebookId,
+                    NotebookId = notebookId,
                     UpdateParentNotebookId = true,
-                    ParentNotebookId = null
+                    ParentNotebookId = childNotebookId
                 });
 
                 await context.CommitAsync();
