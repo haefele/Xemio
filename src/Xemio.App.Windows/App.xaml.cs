@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using UwCore.Application;
 using Xemio.App.Windows.ApplicationModes;
+using Xemio.App.Windows.Services.Auth;
 using Xemio.App.Windows.Views.Login;
+using Xemio.Client;
 
 namespace Xemio.App.Windows
 {
@@ -26,7 +28,11 @@ namespace Xemio.App.Windows
 
         public override IEnumerable<Type> GetServiceTypes()
         {
-            return base.GetServiceTypes();
+            yield return typeof(XemioClient);
+            yield return typeof(XemioClient);
+
+            yield return typeof(IAuthService);
+            yield return typeof(AuthService);
         }
 
         public override ShellMode GetCurrentMode() => IoC.Get<LoggedOutApplicationMode>();
