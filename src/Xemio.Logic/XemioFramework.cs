@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using Raven.Client.Exceptions;
 using Raven.Client.ServerWide.Operations;
 using Raven.Embedded;
 using Xemio.Logic.Configuration;
@@ -68,7 +69,10 @@ namespace Xemio.Logic
                 }
                 else
                 {
-                    EmbeddedServer.Instance.StartServer();
+                    var serverOptions = new ServerOptions();
+                    serverOptions.FrameworkVersion = "2.2.1"; //TODO: Find a better way for this
+                    
+                    EmbeddedServer.Instance.StartServer(serverOptions);
 
                     string databaseName = databaseConfiguration.CreateRandomDatabaseNameForEmbeddedUsage
                         ? Guid.NewGuid().ToString("N")
@@ -79,7 +83,7 @@ namespace Xemio.Logic
                     // And that event subscription happens the first time we use the store.Maintenance instance
                     var databaseOptions = new DatabaseOptions(databaseName)
                     {
-                        SkipCreatingDatabase = true
+                        SkipCreatingDatabase = true,
                     };
                     var store = EmbeddedServer.Instance.GetDocumentStore(databaseOptions);
 
@@ -91,7 +95,14 @@ namespace Xemio.Logic
                         };
                     }
 
-                    store.Maintenance.Server.Send(new CreateDatabaseOperation(databaseOptions.DatabaseRecord));
+                    try 
+                    {
+                        store.Maintenance.Server.Send(new CreateDatabaseOperation(databaseOptions.DatabaseRecord));
+                    }
+                    catch (ConcurrencyException) 
+                    {
+                        // The database already exists, move on
+                    }
 
                     return store;
                 }

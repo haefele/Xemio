@@ -10,8 +10,11 @@ namespace Xemio.Tests.Playground
     public class RequestAuthorizationTests : PlaygroundTests
     {
         [Fact]
-        public async Task Playground()
+        public Task Playground()
         {
+            return Task.CompletedTask;
+
+
             //AuthToken token;
 
             //using (var context = this.RequestManager.StartRequestContext())
