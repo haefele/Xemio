@@ -80,7 +80,7 @@ namespace Xemio.Server.Endpoints
             return this.Ok(result);
         }
 
-        [HttpPatch("/{notebookId")]
+        [HttpPatch("/{notebookId}")]
         public async Task<ActionResult<NotebookDTO>> UpdateNotebook(string notebookId, UpdateNotebookAction action, CancellationToken token)
         {
             var request = new UpdateNotebookRequest
