@@ -8,7 +8,6 @@ using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Extensions;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth;
-using Xemio.Logic.Requests.Notebooks;
 using Xemio.Logic.Services.EntityId;
 
 namespace Xemio.Server.AspNetCore
@@ -33,8 +32,6 @@ namespace Xemio.Server.AspNetCore
             Handle<NoUserWithEmailAddressExistsException>(StatusCodes.Status404NotFound, "Login failed", "Email address or password is incorrect.");
 
             Handle<EmailAddressAlreadyInUseException>(StatusCodes.Status409Conflict, "Registration failed", "Email address is already in use.");
-
-            Handle<NotebookDoesNotExistException>(StatusCodes.Status404NotFound, "Notebook not found", (e, s) => $"The notebook \"{s.GetService<IEntityIdManager>().TrimCollectionNameFromId<Notebook>(e.NotebookId)}\" does not exist.");
 
             Handle<RequestAuthorizationAttributeMissingException>(StatusCodes.Status500InternalServerError, "Authorization attribute missing", f => $"The request \"{f.RequestType.FullName}\" is missing a authorization attribute.");
         }

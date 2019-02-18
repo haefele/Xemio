@@ -5,6 +5,5 @@
         string GenerateNew<T>();
         string TrimCollectionNameFromId<T>(string idWithCollectionName);
         string AddCollectionName<T>(string idWithoutCollectionName);
-        string GenerateNotebookHierarchyId(string userId);
     }
 }

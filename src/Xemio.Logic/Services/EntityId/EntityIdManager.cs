@@ -38,10 +38,5 @@ namespace Xemio.Logic.Services.EntityId
 
             return idPrefix + "/" + idWithoutCollectionName;
         }
-
-        public string GenerateNotebookHierarchyId(string userId)
-        {
-            return userId + "/notebookHierarchy";
-        }
     }
 }
