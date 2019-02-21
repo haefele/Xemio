@@ -1,15 +1,32 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Database.Entities;
+using Xemio.Logic.Extensions;
 using Xemio.Logic.Services.EntityId;
 
-namespace Xemio.Logic.Requests.Auth.RegisterUser
+namespace Xemio.Logic.Requests.Auth
 {
+    [UnauthorizedRequest]
+    public class RegisterUserRequest : IRequest<User>
+    {
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
+    {
+        public RegisterUserRequestValidator()
+        {
+            this.RuleFor(f => f.EmailAddress).NotEmpty().EmailAddress().NoSurroundingWhitespace();
+            this.RuleFor(f => f.Password).NotEmpty().MinimumLength(8);
+        }
+    }
+
     public class RegisterUserRequestHandler : IRequestHandler<RegisterUserRequest, User>
     {
         private readonly IDocumentStore _store;

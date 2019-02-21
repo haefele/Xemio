@@ -7,8 +7,7 @@ using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Raven.Client.Documents;
-using Xemio.Logic.Requests.Auth.LoginUser;
-using Xemio.Logic.Requests.Auth.RegisterUser;
+using Xemio.Logic.Requests.Auth;
 using Xemio.Logic.Services.JsonWebToken;
 using Xemio.Logic.Services.Requests;
 

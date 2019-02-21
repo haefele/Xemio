@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xemio.Logic;
-using Xemio.Logic.Requests.Auth.LoginUser;
-using Xemio.Logic.Requests.Auth.RegisterUser;
+using Xemio.Logic.Requests.Auth;
 using Xemio.Logic.Services.JsonWebToken;
 using Xemio.Logic.Services.Requests;
 

@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
 using Xemio.Logic.Requests;
-using Xemio.Logic.Requests.Auth.LoginUser;
-using Xemio.Logic.Requests.Auth.RegisterUser;
 using Xemio.Logic.Services.JsonWebToken;
 using Xunit;
 

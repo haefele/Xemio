@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Xemio.Client.Data.Endpoints.Auth;
 using Xemio.Logic.Requests;
 using Xemio.Logic.Requests.Auth;
-using Xemio.Logic.Requests.Auth.LoginUser;
-using Xemio.Logic.Requests.Auth.RegisterUser;
 
 namespace Xemio.Server.Endpoints
 {

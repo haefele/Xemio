@@ -71,7 +71,7 @@ namespace Xemio.Logic
                 else
                 {
                     var serverOptions = new ServerOptions();
-                    serverOptions.FrameworkVersion = "2.2.1"; //TODO: Find a better way for this
+                    //serverOptions.FrameworkVersion = "2.2.1"; //TODO: Find a better way for this
                     
                     EmbeddedServer.Instance.StartServer(serverOptions);
 

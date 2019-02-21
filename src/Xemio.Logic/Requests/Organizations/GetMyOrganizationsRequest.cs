@@ -4,12 +4,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Database.Entities;
 using Xemio.Logic.Database.Indexes;
 
-namespace Xemio.Logic.Requests.Organizations.GetOrganizations
+namespace Xemio.Logic.Requests.Organizations
 {
+    [AuthorizedRequest]
+    public class GetMyOrganizationsRequest : IRequest<List<Organization>>
+    {
+    }
+
     public class GetMyOrganizationsRequestHandler : IRequestHandler<GetMyOrganizationsRequest, List<Organization>>
     {
         private readonly IAsyncDocumentSession _session;

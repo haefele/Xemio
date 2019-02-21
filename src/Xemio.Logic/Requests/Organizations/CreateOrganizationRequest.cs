@@ -1,12 +1,29 @@
 using MediatR;
+using Xemio.Logic.Requests;
 using Xemio.Logic.Database.Entities;
+using FluentValidation;
+using Xemio.Logic.Extensions;
 using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.Documents.Session;
 using Xemio.Logic.Services.EntityId;
 
-namespace Xemio.Logic.Requests.Organizations.CreateOrganization
+namespace Xemio.Logic.Requests.Organizations
 {
+    [AuthorizedRequest]
+    public class CreateOrganizationRequest : IRequest<Organization>
+    {
+        public string Name { get; set; }
+    }
+
+    public class CreateOrganizationRequestValidator : AbstractValidator<CreateOrganizationRequest> 
+    {
+        public CreateOrganizationRequestValidator()
+        {
+            this.RuleFor(f => f.Name).NotEmpty().NoSurroundingWhitespace();
+        }
+    }
+
     public class CreateOrganizationRequestHandler : IRequestHandler<CreateOrganizationRequest, Organization>
     {
         private readonly IAsyncDocumentSession _session;
@@ -43,6 +60,7 @@ namespace Xemio.Logic.Requests.Organizations.CreateOrganization
                 }
             };
 
+            this._session.Advanced.WaitForIndexesAfterSaveChanges();            
             await this._session.StoreAsync(organization, cancellationToken);
 
             return organization;
