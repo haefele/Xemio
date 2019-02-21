@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Session;
 using Raven.Client.Exceptions;
 using Raven.Client.ServerWide.Operations;
@@ -103,6 +104,9 @@ namespace Xemio.Logic
                     {
                         // The database already exists, move on
                     }
+
+
+                    IndexCreation.CreateIndexes(typeof(XemioFramework).Assembly, store);
 
                     return store;
                 }
